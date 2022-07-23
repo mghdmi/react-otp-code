@@ -17,7 +17,7 @@ export default function OTPField({ fields = 5, autoFocus, className }: fieldProp
     if (!/^[0-9۰-۹]*$/.test(value) || value.length > 1) return;
 
     const englishNumber = toEnglishNumber(value);
-    setInputValues((prevInputs) => {
+    setInputValues(prevInputs => {
       return prevInputs.map((lastValue, inputIndex) =>
         inputIndex === index ? englishNumber : lastValue
       );
@@ -73,9 +73,9 @@ export default function OTPField({ fields = 5, autoFocus, className }: fieldProp
           autoFocus={autoFocus && index === 0}
           maxLength={fields}
           value={inputValues[index]}
-          onChange={(e) => handleChange(e, index)}
-          onKeyDown={(e) => handleKeyDown(e)}
-          onFocus={(e) => handleFocus(e)}
+          onChange={e => handleChange(e, index)}
+          onKeyDown={e => handleKeyDown(e)}
+          onFocus={e => handleFocus(e)}
         />
       ))}
     </>
