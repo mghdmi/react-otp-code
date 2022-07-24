@@ -1,5 +1,5 @@
 import React from 'react';
-import { toEnglishNumber } from './utils';
+import { isValidNumber, toEnglishNumber } from './utils';
 
 type fieldProps = {
   fields: number;
@@ -14,9 +14,9 @@ export default function OTPField({ fields = 5, autoFocus, className }: fieldProp
     const value = e.target.value.trim();
 
     // only accept english and persian digits
-    if (!/^[0-9۰-۹]*$/.test(value) || value.length > 1) return;
+    if (!isValidNumber(value) || value.length === fields) return;
 
-    const englishNumber = toEnglishNumber(value);
+    const englishNumber = toEnglishNumber(value).substring(0, 1);
     setInputValues(prevInputs => {
       return prevInputs.map((lastValue, inputIndex) =>
         inputIndex === index ? englishNumber : lastValue
@@ -43,6 +43,14 @@ export default function OTPField({ fields = 5, autoFocus, className }: fieldProp
 
     if (key === 'Backspace' && target.value === '') {
       focusPrev(target);
+    }
+  }
+
+  function handlePaste(e: React.ClipboardEvent<HTMLInputElement>) {
+    const paste = e.clipboardData.getData('text');
+
+    if (isValidNumber(paste) && paste.length === fields) {
+      setInputValues(paste.split(''));
     }
   }
 
@@ -76,6 +84,7 @@ export default function OTPField({ fields = 5, autoFocus, className }: fieldProp
           onChange={e => handleChange(e, index)}
           onKeyDown={e => handleKeyDown(e)}
           onFocus={e => handleFocus(e)}
+          onPaste={e => handlePaste(e)}
         />
       ))}
     </>
