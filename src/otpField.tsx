@@ -50,7 +50,8 @@ export default function OTPField({ fields = 5, autoFocus, className }: fieldProp
     const paste = e.clipboardData.getData('text');
 
     if (isValidNumber(paste) && paste.length === fields) {
-      setInputValues(paste.split(''));
+      const englishNumber = toEnglishNumber(paste);
+      setInputValues(englishNumber.split(''));
     }
   }
 
